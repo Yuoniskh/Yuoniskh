@@ -1,16 +1,43 @@
 <!DOCTYPE html>
-    <html>
-        <head>
-            <link rel="stylesheet" href="style_1.css">
-            <script src="script_1.js"></script>
-        </head>
-        <bady>
-            <header>welcome in my site</header>
-            <h2>my site</h2>
-            <div style="text-align: center;">
-            <a href="http://www.facebook.com" target="_top" ><img src="fb.bmp" height="12px" width="12px"></a>
-            <a href="http://www.youtube.com" target="_top"><img src="yb.bmp" height="12px" width="12px"></a>
-            <a href="http://www.telegram.com" target="_top"><img src="tg.bmp" height="12px" width="12px"></a>
-            </div>
-        </bady>
-    </html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدير الملفات</title>
+    <link rel="stylesheet" href="style_1.css">
+</head>
+<body onload="checkLoginStatus()">
+    <div class="container">
+        <h1>مدير الملفات</h1>
+
+        <!-- نموذج تسجيل الدخول للمديرين -->
+        <div id="login-box">
+            <h2>تسجيل الدخول</h2>
+            <input type="text" id="admin-user" placeholder="اسم المستخدم">
+            <input type="password" id="admin-pass" placeholder="كلمة المرور">
+            <button onclick="login()">دخول</button>
+            <p>ليس لديك حساب؟ <a href="#" onclick="showRegister()">إنشاء حساب جديد</a></p>
+        </div>
+
+        <!-- نموذج تسجيل حساب جديد -->
+        <div id="register-box" style="display: none;">
+            <h2>إنشاء حساب جديد</h2>
+            <input type="text" id="new-user" placeholder="اسم المستخدم">
+            <input type="password" id="new-pass" placeholder="كلمة المرور">
+            <button onclick="register()">تسجيل</button>
+            <p><a href="#" onclick="showLogin()">العودة إلى تسجيل الدخول</a></p>
+        </div>
+
+        <!-- قائمة الملفات -->
+        <div id="file-list">
+            <!-- سيتم تحميل الملفات هنا عبر JavaScript -->
+        </div>
+
+        <!-- رفع الملفات -->
+        <div id="upload-box">
+            <input type="file" id="file-input">
+            <button onclick="uploadFile()">رفع الملف</button>
+            <button onclick="logout()">تسجيل الخروج</button> <!-- زر تسجيل الخروج -->
+        </div>
+    </div>
+</body>

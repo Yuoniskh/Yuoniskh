@@ -1,30 +1,96 @@
-*{
-    position:relative;
-}
-html{
- background: fixed rgb(26, 30, 17);   
- background-image:url("bg.jpg");
- background-position:center;
- background-size:cover;
-}
-header{
-    color : blue;
+/* خلفية الموقع */
+body {
+    font-family: Arial, sans-serif;
     text-align: center;
-    font-size: smaller;
-    font-family: sans-serif;
-    background-color: rgba(26, 124, 124, 0.497);
+    background: linear-gradient(to right, #a8e6cf, #56cfe1, #3d5a80);
+    color: white;
+    margin: 0;
+    padding: 0;
 }
-h2{
-    color:rgb(5, 105, 108);
-    text-align: center;
-    margin-top: 5%;
-    border-radius: 10%;
-    background-color: rgb(3, 11, 46);
+
+/* الحاوية الرئيسية */
+.container {
+    width: 90%;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
 }
-img:hover{ 
-    height: 15px;
-    width: 15px;
-    border: 1px rgb(5, 159, 255) solid ;
-    
-    border-radius: 25%;
+
+/* عنوان الموقع */
+h1 {
+    color: #fff;
+}
+
+/* نموذج تسجيل الدخول */
+#login-box {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+#login-box input {
+    width: 80%;
+    padding: 10px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+}
+
+#login-box button {
+    padding: 10px;
+    background: #56cfe1;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#login-box button:hover {
+    background: #3d5a80;
+}
+
+/* قائمة الملفات */
+#file-list {
+    margin: 20px auto;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+}
+
+/* رفع الملفات */
+#upload-box {
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px;
+    background: #56cfe1;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background: #3d5a80;
+}
+
+/* تحسين التصميم للهواتف */
+@media (max-width: 600px) {
+    .container {
+        width: 95%;
+    }
+
+    #login-box input {
+        width: 90%;
+    }
+}
+/* إخفاء نموذج رفع الملفات افتراضيًا */
+#upload-box {
+    display: none;
+    margin-top: 20px;
 }

@@ -1,43 +1,172 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YOUNIS KHEZARAN</title>
-    <link rel="stylesheet" href="index.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>YOUNIS KHEZARAN</title>
+  <link rel="stylesheet" href="index.css">
+  <style>
+    /* بعض التنسيقات البسيطة */
+    #login-box, #register-box, #upload-box, #file-list { margin: 1em 0; }
+    #file-list ul { list-style: none; padding: 0; }
+    #file-list li { margin: .5em 0; }
+    .hidden { display: none !important; }
+  </style>
 </head>
-<body onload="checkLoginStatus()">
-    <div class="container">
-        <h1>MY PROJECTS</h1>
+<body>
+  <div class="container">
+    <h1>MY PROJECTS</h1>
 
-        <!-- نموذج تسجيل الدخول للمديرين -->
-        <div id="login-box">
-            <h2>تسجيل الدخول</h2>
-            <input type="text" id="admin-user" placeholder="اسم المستخدم">
-            <input type="password" id="admin-pass" placeholder="كلمة المرور">
-            <button onclick="login()">دخول</button>
-            <p>ليس لديك حساب؟ <a href="#" onclick="showRegister()">إنشاء حساب جديد</a></p>
-        </div>
-
-        <!-- نموذج تسجيل حساب جديد -->
-        <div id="register-box" style="display: none;">
-            <h2>إنشاء حساب جديد</h2>
-            <input type="text" id="new-user" placeholder="اسم المستخدم">
-            <input type="password" id="new-pass" placeholder="كلمة المرور">
-            <button onclick="register()">تسجيل</button>
-            <p><a href="#" onclick="showLogin()">العودة إلى تسجيل الدخول</a></p>
-        </div>
-
-        <!-- قائمة الملفات -->
-        <div id="file-list">
-            <!-- سيتم تحميل الملفات هنا عبر JavaScript -->
-        </div>
-
-        <!-- رفع الملفات -->
-        <div id="upload-box">
-            <input type="file" id="file-input">
-            <button onclick="uploadFile()">رفع الملف</button>
-            <button onclick="logout()">تسجيل الخروج</button> <!-- زر تسجيل الخروج -->
-        </div>
+    <!-- تسجيل الدخول -->
+    <div id="login-box">
+      <h2>تسجيل الدخول</h2>
+      <input type="text" id="admin-user" placeholder="اسم المستخدم">
+      <input type="password" id="admin-pass" placeholder="كلمة المرور">
+      <button onclick="login()">دخول</button>
+      <p>ليس لديك حساب؟ 
+        <a href="#" onclick="showRegister()">إنشاء حساب جديد</a>
+      </p>
+      <p id="login-error" style="color:red;"></p>
     </div>
+
+    <!-- إنشاء حساب جديد -->
+    <div id="register-box" class="hidden">
+      <h2>إنشاء حساب جديد</h2>
+      <input type="text" id="new-user" placeholder="اسم المستخدم">
+      <input type="password" id="new-pass" placeholder="كلمة المرور">
+      <button onclick="register()">تسجيل</button>
+      <p><a href="#" onclick="showLogin()">العودة إلى تسجيل الدخول</a></p>
+      <p id="reg-error" style="color:red;"></p>
+    </div>
+
+    <!-- زر تسجيل الخروج مشترك -->
+    <div id="logout-box" class="hidden">
+      <button onclick="logout()">تسجيل الخروج</button>
+    </div>
+
+    <!-- رفع الملفات (للأدمن فقط) -->
+    <div id="upload-box" class="hidden">
+      <input type="file" id="file-input">
+      <button onclick="uploadFile()">رفع الملف</button>
+    </div>
+
+    <!-- قائمة الملفات (للجميع بعد تسجيل الدخول) -->
+    <div id="file-list" class="hidden">
+      <h2>الملفات المتاحة</h2>
+      <ul id="files-ul"></ul>
+    </div>
+  </div>
+
+  <script>
+  // تهيئة بيانات افتراضية
+  if (!localStorage.getItem('users')) {
+    const users = [
+      { username: 'admin', password: 'admin123', role: 'admin' }
+    ];
+    localStorage.setItem('users', JSON.stringify(users));
+  }
+  if (!localStorage.getItem('files')) {
+    localStorage.setItem('files', JSON.stringify([]));
+  }
+
+  // عرض/إخفاء الواجهات حسب الحالة
+  function checkLoginStatus() {
+    const current = JSON.parse(localStorage.getItem('currentUser'));
+    const isLoggedIn = !!current;
+    document.getElementById('login-box').classList.toggle('hidden', isLoggedIn);
+    document.getElementById('register-box').classList.add('hidden');
+    document.getElementById('logout-box').classList.toggle('hidden', !isLoggedIn);
+    document.getElementById('file-list').classList.toggle('hidden', !isLoggedIn);
+
+    // رفع الملفات يظهر فقط للأدمن
+    const showUpload = isLoggedIn && current.role === 'admin';
+    document.getElementById('upload-box').classList.toggle('hidden', !showUpload);
+
+    if (isLoggedIn) renderFileList();
+  }
+
+  // عرض نموذج التسجيل
+  function showRegister() {
+    document.getElementById('login-box').classList.add('hidden');
+    document.getElementById('register-box').classList.remove('hidden');
+    clearErrors();
+  }
+
+  // العودة لنموذج الدخول
+  function showLogin() {
+    document.getElementById('register-box').classList.add('hidden');
+    document.getElementById('login-box').classList.remove('hidden');
+    clearErrors();
+  }
+
+  // مسح رسائل الخطأ
+  function clearErrors() {
+    document.getElementById('login-error').textContent = '';
+    document.getElementById('reg-error').textContent = '';
+  }
+
+  // تسجيل مستخدم جديد (role = user)
+  function register() {
+    const name = document.getElementById('new-user').value.trim();
+    const pass = document.getElementById('new-pass').value;
+    const users = JSON.parse(localStorage.getItem('users'));
+    if (!name || !pass) {
+      return document.getElementById('reg-error').textContent = 'جميع الحقول مطلوبة';
+    }
+    if (users.find(u => u.username === name)) {
+      return document.getElementById('reg-error').textContent = 'الاسم مستخدم بالفعل';
+    }
+    users.push({ username: name, password: pass, role: 'user' });
+    localStorage.setItem('users', JSON.stringify(users));
+    // تسجيل الدخول مباشرة بعد التسجيل
+    localStorage.setItem('currentUser', JSON.stringify({ username: name, role: 'user' }));
+    checkLoginStatus();
+  }
+
+  // تسجيل الدخول (سوبر أدمن أو مستخدم عادي)
+  function login() {
+    const name = document.getElementById('admin-user').value.trim();
+    const pass = document.getElementById('admin-pass').value;
+    const users = JSON.parse(localStorage.getItem('users'));
+    const found = users.find(u => u.username === name && u.password === pass);
+    if (!found) {
+      return document.getElementById('login-error').textContent = 'بيانات غير صحيحة';
+    }
+    localStorage.setItem('currentUser', JSON.stringify({ username: found.username, role: found.role }));
+    checkLoginStatus();
+  }
+
+  // تسجيل الخروج
+  function logout() {
+    localStorage.removeItem('currentUser');
+    checkLoginStatus();
+  }
+
+  // رفع ملف (يخزن اسمه في localStorage)
+  function uploadFile() {
+    const input = document.getElementById('file-input');
+    if (!input.files.length) return alert('اختر ملفًا أولاً');
+    const list = JSON.parse(localStorage.getItem('files'));
+    list.push(input.files[0].name);
+    localStorage.setItem('files', JSON.stringify(list));
+    input.value = '';
+    renderFileList();
+  }
+
+  // عرض قائمة الملفات
+  function renderFileList() {
+    const ul = document.getElementById('files-ul');
+    ul.innerHTML = '';
+    const list = JSON.parse(localStorage.getItem('files'));
+    list.forEach((name, idx) => {
+      const li = document.createElement('li');
+      li.textContent = name;
+      ul.appendChild(li);
+    });
+  }
+
+  // تفعيل الفحص عند تحميل الصفحة
+  window.onload = checkLoginStatus;
+  </script>
 </body>
+</html>

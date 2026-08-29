@@ -1,126 +1,51 @@
-document.addEventListener("DOMContentLoaded", () => {
-    loadFiles();
-    checkLoginStatus();
+document.addEventListener('DOMContentLoaded', function() {
+    renderGrid();
 });
-
-function loadFiles() {
-    fetch("files.json")
-        .then(response => response.json())
-        .then(files => {
-            const fileList = document.getElementById("file-list");
-            fileList.innerHTML = "";
-            files.forEach(file => {
-                const fileItem = document.createElement("div");
-                fileItem.innerHTML = `<a href="uploads/${file.filename}" download>${file.filename}</a>`;
-                fileList.appendChild(fileItem);
-            });
-        })
-        .catch(error => console.error("خطأ في تحميل الملفات:", error));
+async function fetchProjects() {
+    try {
+        const response = await fetch('projects.json');
+        if (!response.ok) throw new Error('فشل في تحميل البيانات');
+        return await response.json();
+    } catch (error) {
+        console.error('خطأ:', error);
+        return null;
+    }
 }
 
-function uploadFile() {
-    const fileInput = document.getElementById("file-input");
-    const file = fileInput.files[0];
+// دالة عرض الشبكة
+async function renderGrid() {
+    const grid = document.getElementById('projectsGrid');
+    if (!grid) return;
 
-    if (!file) {
-        alert("يرجى اختيار ملف!");
+    const projects = await fetchProjects();
+    if (!projects) {
+        grid.innerHTML = `
+            <div class="error-message">
+                <h2>⚠️ عذراً</h2>
+                <p>حدث خطأ في تحميل المشاريع. يرجى المحاولة لاحقاً.</p>
+            </div>
+        `;
         return;
     }
 
-    const formData = new FormData();
-    formData.append("file", file);
-
-    fetch("upload.php", {
-        method: "POST",
-        body: formData
-    })
-    .then(response => response.text())
-    .then(() => {
-        alert("تم رفع الملف بنجاح!");
-        loadFiles();
-    })
-    .catch(error => console.error("خطأ في رفع الملف:", error));
-}
-
-// تسجيل الدخول للمديرين
-function login() {
-    const user = document.getElementById("admin-user").value;
-    const pass = document.getElementById("admin-pass").value;
-
-    fetch("users.json")
-        .then(response => response.json())
-        .then(users => {
-            const foundUser = users.find(u => u.username === user && u.password === pass);
-            if (foundUser) {
-                alert("تم تسجيل الدخول بنجاح!");
-                localStorage.setItem("isAdmin", "true");
-                checkLoginStatus();
-            } else {
-                alert("خطأ في تسجيل الدخول! تأكد من اسم المستخدم وكلمة المرور.");
-            }
-        })
-        .catch(error => console.error("خطأ في تسجيل الدخول:", error));
-}
-
-// إنشاء حساب جديد
-function register() {
-    const newUser = document.getElementById("new-user").value;
-    const newPass = document.getElementById("new-pass").value;
-
-    if (!newUser || !newPass) {
-        alert("يرجى إدخال اسم مستخدم وكلمة مرور!");
+    if (projects.length === 0) {
+        grid.innerHTML = `<p style="text-align:center;grid-column:1/-1;">لا توجد مشاريع حالياً</p>`;
         return;
     }
 
-    fetch("users.json")
-        .then(response => response.json())
-        .then(users => {
-            if (users.some(u => u.username === newUser)) {
-                alert("اسم المستخدم موجود بالفعل!");
-                return;
-            }
-
-            users.push({ username: newUser, password: newPass });
-            fetch("save_users.php", {
-                method: "POST",
-                body: JSON.stringify(users),
-                headers: { "Content-Type": "application/json" }
-            })
-            .then(() => {
-                alert("تم إنشاء الحساب بنجاح! يمكنك الآن تسجيل الدخول.");
-                showLogin();
-            })
-            .catch(error => console.error("خطأ في إنشاء الحساب:", error));
-        });
-}
-
-// التحقق من حالة تسجيل الدخول
-function checkLoginStatus() {
-    const isAdmin = localStorage.getItem("isAdmin");
-    if (isAdmin === "true") {
-        document.getElementById("upload-box").style.display = "block";
-        document.getElementById("login-box").style.display = "none";
-        document.getElementById("register-box").style.display = "none";
-    } else {
-        document.getElementById("upload-box").style.display = "none";
-    }
-}
-
-// تسجيل خروج المدير
-function logout() {
-    localStorage.removeItem("isAdmin");
-    alert("تم تسجيل الخروج!");
-    location.reload();
-}
-
-// إظهار نموذج تسجيل الحساب
-function showRegister() {
-    document.getElementById("login-box").style.display = "none";
-    document.getElementById("register-box").style.display = "block";
-}
-
-// العودة إلى تسجيل الدخول
-function showLogin() {
-    document.getElementById("register-box").style.display = "none";
-    document.getElementById("login-box").style.display = "block";
+    // إنشاء البطاقات
+    grid.innerHTML = projects.map(project => `
+        <a href="project.html?id=${project.id}" class="project-card">
+            <div class="card-image-wrapper">
+                <img 
+                    src="${project.image}" 
+                    alt="${project.name}" 
+                    class="card-image"
+                    loading="lazy"
+                    onerror="this.src='https://via.placeholder.com/400x300/4a5568/white?text=${encodeURIComponent(project.name)}'"
+                />
+                <div class="project-name">${project.name}</div>
+            </div>
+        </a>
+    `).join('');
 }

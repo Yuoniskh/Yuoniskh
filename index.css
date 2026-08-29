@@ -6,12 +6,284 @@ body {
     color: white;
     margin: 0;
     padding: 0;
+    min-height: 100vh;
+}
+
+/* إعدادات عامة */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* الهيدر */
+header {
+    background: linear-gradient(135deg, #2d3748, #1a202c);
+    color: white;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.back-btn {
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    transition: background 0.3s;
+    margin-bottom: 1rem;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* الشبكة */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* البطاقة - زر كامل */
+.project-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    border: none;
+    text-align: right;
+    position: relative;
+}
+
+.project-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.project-card:active {
+    transform: scale(0.97);
+}
+
+/* صورة البطاقة */
+.card-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+    background: #e2e8f0;
+}
+
+/* اسم المشروع على الصورة */
+.card-image-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.card-image-wrapper .project-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    color: white;
+    padding: 2.5rem 1rem 1rem;
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* معلومات البطاقة */
+.card-info {
+    padding: 1rem;
+    background: white;
+}
+
+.card-info p {
+    color: #4a5568;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    display: -webkit-box;
+    
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ============================================
+   صفحة التفاصيل
+   ============================================ */
+.project-details {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+.details-container {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 768px) {
+    .details-container {
+        flex-direction: row;
+        align-items: stretch;
+    }
+}
+
+.details-image {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    background: #e2e8f0;
+}
+
+@media (min-width: 768px) {
+    .details-image {
+        width: 50%;
+        height: auto;
+        min-height: 400px;
+    }
+}
+
+.details-content {
+    padding: 2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.details-content h2 {
+    font-size: 2rem;
+    color: #1a202c;
+    margin-bottom: 1rem;
+}
+
+.details-content .details-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #4a5568;
+    margin-bottom: 1.5rem;
+}
+
+/* زر التحميل */
+.download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #48bb78;
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: background 0.3s, transform 0.2s;
+    border: none;
+    cursor: pointer;
+    align-self: flex-start;
+}
+
+.download-btn:hover {
+    background: #38a169;
+    transform: translateY(-2px);
+}
+
+.download-btn:active {
+    transform: scale(0.96);
+}
+
+.download-btn:disabled,
+.download-btn.no-link {
+    background: #a0aec0;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.download-btn.no-link:hover {
+    transform: none;
+    background: #a0aec0;
+}
+
+/* حالة عدم وجود رابط */
+.no-download {
+    color: #718096;
+    font-size: 1rem;
+    background: #edf2f7;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    display: inline-block;
+}
+
+/* رسالة الخطأ */
+.error-message {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+}
+
+.error-message h2 {
+    color: #e53e3e;
+    margin-bottom: 0.5rem;
+}
+
+.error-message a {
+    color: #4299e1;
+    text-decoration: none;
+}
+
+/* تحميل */
+.loading {
+    text-align: center;
+    padding: 4rem;
+    font-size: 1.2rem;
+    color: #4a5568;
+}
+
+.loading::after {
+    content: '...';
+    animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+    0% { content: ''; }
+    33% { content: '.'; }
+    66% { content: '..'; }
+    100% { content: '...'; }
 }
 
 /* الحاوية الرئيسية */
 .container {
     width: 90%;
-    max-width: 600px;
+    max-width: 1920px;
     margin: 50px auto;
     padding: 20px;
     background: rgba(255, 255, 255, 0.2);
@@ -24,46 +296,75 @@ h1 {
     color: #fff;
 }
 
-/* نموذج تسجيل الدخول */
-#login-box {
-    background: rgba(255, 255, 255, 0.3);
-    padding: 15px;
+.top-bar {
+    background-color: #3d5a80;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
     border-radius: 8px;
-    margin-bottom: 20px;
+    margin: 15px 0;
 }
 
-#login-box input {
-    width: 80%;
-    padding: 10px;
-    margin: 5px;
-    border: none;
-    border-radius: 5px;
+.first-group {
+    display: flex;
+    gap: 10px;
 }
 
-#login-box button {
-    padding: 10px;
-    background: #56cfe1;
-    color: white;
+.second-group {
+    display: flex;
+    gap: 10px;
+}
+
+/* تنسيق الأزرار - مثالي للصور 32x32 */
+.top-bar button,
+.top-bar a {
+    background: rgba(255, 255, 255, 0.15);
     border: none;
+    padding: 8px; /* مسافة حول الصورة */
+    border-radius: 8px; /* أو 50% لدائري */
     cursor: pointer;
-    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    
+    /* ✅ لتوسيط الصورة */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* ✅ حجم مناسب للصورة 32x32 مع padding */
+    width: 48px;  /* 32 + 8 + 8 */
+    height: 48px; /* 32 + 8 + 8 */
 }
 
-#login-box button:hover {
-    background: #3d5a80;
+/* ✅ تنسيق الصورة 32x32 */
+.top-bar button img,
+.top-bar a img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    display: block;
+    /* إذا كانت الصورة بيضاء وتريد تغيير لونها */
+    /* filter: brightness(0) invert(1); */
 }
 
+.top-bar button:hover,
+.top-bar a:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.top-bar button:active,
+.top-bar a:active {
+    transform: scale(0.95);
+}
 /* قائمة الملفات */
-#file-list {
+#cards {
     margin: 20px auto;
     padding: 10px;
     background: rgba(255, 255, 255, 0.3);
     border-radius: 5px;
-}
-
-/* رفع الملفات */
-#upload-box {
-    margin-top: 20px;
 }
 
 button {
@@ -84,13 +385,17 @@ button:hover {
     .container {
         width: 95%;
     }
-
-    #login-box input {
-        width: 90%;
-    }
 }
-/* إخفاء نموذج رفع الملفات افتراضيًا */
-#upload-box {
-    display: none;
-    margin-top: 20px;
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2d3748;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 10px 10px 0 0;
+    text-align: center;
+    width: auto;
+    min-width: 200px;
 }

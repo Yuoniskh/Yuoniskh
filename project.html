@@ -1,17 +1,20 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>تفاصيل المشروع</title>
+    <title id="pageTitle">Project Details</title>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
     <div class="container">
-        <h1>📋 تفاصيل المشروع</h1>
+        <h1 id="detailsTitle">📋 Project Details</h1>
         <div class="top-bar">
             <div class="first-group">
-                <a href="index.html" class="back-btn">← العودة للشبكة</a>
+                <a href="index.html" class="back-btn" id="backBtn">← Back to Grid</a>
+            </div>
+            <div class="second-group">
+                <button onclick="changeLang()" id="langBtn" style="font-size: larger;">AR</button>
             </div>
         </div>
         <main>
@@ -19,6 +22,7 @@
             </div>
         </main>
     </div>
+    <script src="translations.js" defer></script>
     <script src="project.js" defer></script>
 </body>
 </html>

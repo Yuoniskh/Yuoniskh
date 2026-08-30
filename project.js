@@ -1,3 +1,5 @@
+// project.js - صفحة التفاصيل
+
 document.addEventListener('DOMContentLoaded', function() {
     renderProject();
 });
@@ -21,10 +23,11 @@ async function renderProject() {
     const projectId = parseInt(params.get('id'));
 
     if (isNaN(projectId)) {
+        const t = translations[currentLanguage];
         container.innerHTML = `
             <div class="error-message">
-                <h2>⚠️ خطأ</h2>
-                <p>لم يتم تحديد المشروع. <a href="index.html">العودة للشبكة</a></p>
+                <h2>${t.errorTitle}</h2>
+                <p>${t.errorMessage} <a href="index.html">${t.backToGrid}</a></p>
             </div>
         `;
         return;
@@ -32,10 +35,11 @@ async function renderProject() {
 
     const projects = await fetchProjects();
     if (!projects) {
+        const t = translations[currentLanguage];
         container.innerHTML = `
             <div class="error-message">
-                <h2>⚠️ عذراً</h2>
-                <p>حدث خطأ في تحميل البيانات. <a href="index.html">العودة للشبكة</a></p>
+                <h2>${t.errorLoading}</h2>
+                <p>${t.errorLoadingMessage} <a href="index.html">${t.backToGridLink}</a></p>
             </div>
         `;
         return;
@@ -44,37 +48,47 @@ async function renderProject() {
     const project = projects.find(p => p.id === projectId);
 
     if (!project) {
+        const t = translations[currentLanguage];
         container.innerHTML = `
             <div class="error-message">
-                <h2>🔍 غير موجود</h2>
-                <p>المشروع المطلوب غير موجود. <a href="index.html">العودة للشبكة</a></p>
+                <h2>${t.notFound}</h2>
+                <p>${t.notFoundMessage} <a href="index.html">${t.backToGridLink}</a></p>
             </div>
         `;
         return;
     }
 
     const hasDownload = project.downloadLink && project.downloadLink.trim() !== '';
+    const t = translations[currentLanguage];
+    
+    // استخدام الدوال المساعدة للحصول على النصوص المترجمة
+    const projectName = getLocalizedText(project, 'name');
+    const projectDetails = getLocalizedText(project, 'details');
 
     container.innerHTML = `
         <div class="details-container">
             <img 
                 src="${project.image}" 
-                alt="${project.name}" 
+                alt="${projectName}" 
                 class="details-image"
-                onerror="this.src='https://via.placeholder.com/600x400/4a5568/white?text=${encodeURIComponent(project.name)}'"
+                onerror="this.src='https://via.placeholder.com/600x400/4a5568/white?text=${encodeURIComponent(projectName)}'"
             />
             <div class="details-content">
-                <h2>${project.name}</h2>
-                <p class="details-text">${project.details}</p>
+                <h2>${projectName}</h2>
+                <p class="details-text">${projectDetails}</p>
                 
                 ${hasDownload ? `
                     <a href="${project.downloadLink}" class="download-btn" target="_blank">
-                        ⬇️ اطلاع 
+                        ${t.downloadBtn}
                     </a>
                 ` : `
-                    <span class="no-download">⛔ غير متاح </span>
+                    <span class="no-download">${t.notAvailable}</span>
                 `}
             </div>
         </div>
     `;
 }
+
+// جعل الدوال متاحة عالمياً
+window.renderProject = renderProject;
+window.fetchProjects = fetchProjects;

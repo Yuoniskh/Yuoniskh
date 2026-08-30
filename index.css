@@ -301,19 +301,19 @@ h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 10px 10px;
     border-radius: 8px;
-    margin: 15px 0;
+    margin: 10px 0;
 }
 
 .first-group {
     display: flex;
-    gap: 10px;
+    gap: 5px;
 }
 
 .second-group {
     display: flex;
-    gap: 10px;
+    gap: 5px;
 }
 
 /* تنسيق الأزرار - مثالي للصور 32x32 */
@@ -321,8 +321,8 @@ h1 {
 .top-bar a {
     background: rgba(255, 255, 255, 0.15);
     border: none;
-    padding: 8px; /* مسافة حول الصورة */
-    border-radius: 8px; /* أو 50% لدائري */
+    padding: 4px; /* مسافة حول الصورة */
+    border-radius: 4px; /* أو 50% لدائري */
     cursor: pointer;
     text-decoration: none;
     transition: all 0.3s ease;
@@ -333,15 +333,15 @@ h1 {
     justify-content: center;
     
     /* ✅ حجم مناسب للصورة 32x32 مع padding */
-    width: 48px;  /* 32 + 8 + 8 */
-    height: 48px; /* 32 + 8 + 8 */
+    width: 32px;  /* 32 + 8 + 8 */
+    height: 32px; /* 32 + 8 + 8 */
 }
 
 /* ✅ تنسيق الصورة 32x32 */
 .top-bar button img,
 .top-bar a img {
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height:24px;
     object-fit: contain;
     display: block;
     /* إذا كانت الصورة بيضاء وتريد تغيير لونها */
@@ -398,4 +398,47 @@ footer {
     text-align: center;
     width: auto;
     min-width: 200px;
+}
+/* دعم اللغة العربية (RTL) */
+html[dir="rtl"] {
+    text-align: right;
+}
+
+html[dir="rtl"] .project-card {
+    text-align: right;
+}
+
+
+
+html[dir="rtl"] .top-bar {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .first-group {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .second-group {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .card-image-wrapper .project-name {
+    text-align: right;
+    padding-right: 1rem;
+}
+
+html[dir="rtl"] .details-content {
+    text-align: right;
+}
+
+html[dir="rtl"] .download-btn {
+    align-self: flex-end;
+}
+
+body {
+    transition: all 0.3s ease;
+}
+
+.container {
+    transition: all 0.3s ease;
 }

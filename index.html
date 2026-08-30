@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Younis Khezran</h1>
+        <h1 id="siteTitle">Younis Khezran</h1>
         <div class="top-bar">
             <div class="first-group">
                 <button><a href="https://www.facebook.com/younismkh/"><img src="fb.jpg" style="border-radius: 50%;"></a></button>
@@ -17,6 +17,7 @@
             </div>
             <div class="second-group">
                 <button><a href="mailto://khezaranyuonis@gmail.com">✉</a></button>
+                <button onclick="changeLang()" id="langBtn" style="font-size: larger;">AR</button>
             </div>
         </div>
         <main>
@@ -25,7 +26,8 @@
             </div>
         </main>
     </div>
-    <footer >©  all rights reserved - Younis Khezaran - 2026</footer>
+    <footer id="footerText">© all rights reserved - Younis Khezaran - 2026</footer>
+    <script src="translations.js" defer></script>
     <script src="index.js" defer></script>
 </body>
 </html>
